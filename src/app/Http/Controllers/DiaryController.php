@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Diary;
 
 class DiaryController extends Controller
@@ -18,9 +19,9 @@ class DiaryController extends Controller
         return view('create');
     }
 
-    public function store(Request $request)
+    public function confirm(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'body' => 'required|string|max:20',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048'
         ], [
@@ -33,15 +34,37 @@ class DiaryController extends Controller
             'image.max'   => '画像サイズは2MB以内にしてください',
         ]);
 
-        $path = null;
+        $image_path = null;
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('images', 'public');
+            $image_path = $request->file('image')->store('tmp', 'public');
+        }
+
+        return view('confirm', [
+            'image_path' => $image_path,
+            'body' => $validated['body']
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp',
+            'body' => 'required|max:20'
+        ]);
+
+        $image_path = null;
+
+        if ($request->image_path) {
+            $newPath = 'images/' . basename($request->image_path);
+            Storage::disk('public')->move($request->image_path, $newPath);
+
+            $image_path = $newPath;
         }
 
         Diary::create([
-            'body' => $request->body,
-            'image_path' => $path
+            'image_path' => $image_path,
+            'body' => $request->body
         ]);
 
         return redirect('/');
@@ -52,19 +75,55 @@ class DiaryController extends Controller
         return view('edit',compact('diary'));
     }
 
-    public function update(Request $request, Diary $diary)
+    public function confirmUpdate(Request $request, $id)
     {
-        $request->validate([
+        $validated = $request->validate([
             'body' => 'required|string|max:20',
-            'image' => 'nullable|image|mimes:jpg,jpeg|max:2048'
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048'
+        ], [
+            // テキスト
+            'body.required' => '日記を入力してください',
+            'body.max' => '日記は20文字以内で入力してください',
+            // 画像系
+            'image.image' => '画像ファイルを選択してください',
+            'image.mimes' => 'jpg / jpeg / png / gif / webp形式の画像をアップロードしてください',
+            'image.max'   => '画像サイズは2MB以内にしてください',
         ]);
 
+        $image_path = null;
+
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('images', 'public');
-            $diary->image_path = $path;
+            $image_path = $request->file('image')->store('tmp', 'public');
+        }
+
+        return view('confirm', [
+            'image_path' => $image_path,
+            'body' => $validated['body'],
+            'diary_id' => $id,
+            'isEdit' => true
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $diary = Diary::findOrFail($id);
+
+        $request->validate([
+            'image' => 'nullable|image|mimes:jpg,jpeg|max:2048',
+            'body' => 'required|string|max:20'
+        ]);
+
+        $image_path = null;
+
+        if ($request->image_path) {
+            $newPath = 'images/' . basename($request->image_path);
+            Storage::disk('public')->move($request->image_path, $newPath);
+
+            $image_path = $newPath;
         }
 
         $diary->body = $request->body;
+        $diary->image_path = $image_path;
         $diary->save();
 
         return redirect('/');
