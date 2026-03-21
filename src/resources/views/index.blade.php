@@ -1,6 +1,13 @@
 @extends('layouts.common')
 
 @section('content')
+<!-- 画像拡大用モーダル -->
+<script src="{{ asset('js/imageModal.js') }}"></script>
+<div id="image-modal" class="image-modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="modal-image">
+</div>
+
 <div class="body_container">
     <h1>日記一覧</h1>
 
@@ -30,7 +37,12 @@
         <!-- 下段 -->
         <div class="diary-body">
             @if($diary->image_path)
-                <img src="{{ asset('storage/' . $diary->image_path) }}" class="diary-image">
+                <img 
+                    src="{{ asset('storage/' . $diary->image_path) }}" 
+                    class="diary-image preview-image"
+                >
+            @else
+                <div class="no-image">No Image</div>
             @endif
 
             <p class="diary-text">{{ $diary->body }}</p>
