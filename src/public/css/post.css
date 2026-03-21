@@ -1,0 +1,42 @@
+/* フォーム全体 */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* 各入力ブロック */
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ラベル */
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* 入力欄 */
+.form-group input[type="text"],
+.form-group input[type="file"] {
+    padding: 6px;
+    font-size: 14px;
+}
+
+/* 入力エラー */
+.error {
+    color: red;
+    margin-top: 5px;
+}
+
+.input-error {
+    border: 1px solid red;
+}
+
+/* ボタン */
+button {
+    width: 30%;
+    align-self: center; /* ← 中央寄せ */
+    padding: 8px;
+}

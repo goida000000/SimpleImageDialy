@@ -1,0 +1,104 @@
+/* タイトル */
+h1 {
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* アプリ本体定義 */
+body {
+    margin: 0;
+    font-family: sans-serif;
+    /* background-color: #f5f5f5; */
+}
+
+.body_container {
+    width: 600px;   /* 最大幅制限 */
+    margin: 0 auto;     /* 中央寄せ */
+    padding: 20px;
+}
+
+/* 日記全体 */
+.diary-item {
+    border-bottom: 1px solid #ccc;
+    padding: 15px 0;
+}
+
+/* 上段 */
+.diary-header {
+    display: flex;
+    justify-content: space-between; /* 左右に分離 */
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* 日付 */
+.diary-date {
+    font-size: 14px;
+    color: #555;
+}
+
+/* ボタン群 */
+.diary-actions {
+    display: flex;
+    gap: 10px; /* 編集と削除の間隔 */
+}
+
+/* ボタン共通 */
+.link-button, button {
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 4px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+}
+
+button.delete {
+    background-color: #c00;
+    color: #fff;
+}
+
+button.post {
+    background-color: #00c;
+    color: #fff;
+}
+
+.link-button.new{
+    background-color: #00c;
+    color: #fff;
+}
+
+.link-button.new:hover {
+    background-color: #55c;
+}
+
+.link-button.edit{
+    background-color: #080;
+    color: #fff;
+}
+
+.link-button.edit:hover{
+    background-color: #5c5;
+    color: #fff;
+}
+
+/* 下段 */
+.diary-body {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-height: 120px;
+}
+
+/* 画像 */
+.diary-image {
+    width: 160px;
+    height: 120px;
+    object-fit: cover; /* はみ出し防止 */
+}
+
+/* 文章 */
+.diary-text {
+    flex: 1;
+}
