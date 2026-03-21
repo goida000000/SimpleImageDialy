@@ -9,6 +9,7 @@
         @endif
     </head>
     <body>
+        @yield('imageModal')
 
         <div class="body_container">
 
