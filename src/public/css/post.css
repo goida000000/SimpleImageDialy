@@ -37,6 +37,6 @@ form {
 /* ボタン */
 button {
     width: 30%;
-    align-self: center; /* ← 中央寄せ */
+    align-self: center;
     padding: 8px;
 }
