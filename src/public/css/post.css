@@ -40,3 +40,14 @@ button {
     align-self: center;
     padding: 8px;
 }
+
+.confirm-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.confirm-actions button {
+    min-width: 100px;
+}
