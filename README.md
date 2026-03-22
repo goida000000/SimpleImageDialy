@@ -128,40 +128,26 @@ docker-compose exec app php artisan test
 
 # トラブルシューティング
 
-## ❗ no such table エラー
+## no such table エラー
 
-```text
+```
 no such table: diaries
 ```
 
-原因：
-
-* テストDBにマイグレーション未適用
-
-対策：
-
-* `RefreshDatabase` を使用
-* DB設定を確認
+* DBにマイグレーションが適用されていない
 
 ---
 
-## ❗ APP_KEY エラー
+## APP_KEY エラー
 
 ```text
 No application encryption key has been specified
 ```
 
-対策：
+* .env.testingにAPP_KEYがない
 
 ```bash
 docker-compose exec app php artisan key:generate --env=testing
 ```
-
----
-
-# 補足
-
-* テスト環境ではDB・セッション・キャッシュの依存を減らすことで安定性を向上
-* 実務でもSQLite（ファイル）＋RefreshDatabaseの構成が一般的
 
 ---
